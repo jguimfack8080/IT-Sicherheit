@@ -1,0 +1,10 @@
+curl -X POST -H "Content-Type: application/json" -d '{"account-id":"exampleId", "password":"examplePassword"}' http://localhost:5000/create_account
+
+curl -X POST -F "account-id=exampleId" \
+             -F "password=examplePassword" \
+             -F "email-adresse=jeunaj3@gmail.com" \
+             -F "key-id=key123" \
+             -F "pgp-key=@./pgp-key.asc" \
+             http://localhost:5000/register_pgp_key
+
+ curl -X POST -H "Content-Type: application/json" -d '{"account-id":"exampleId","password":"examplePassword","response":"022b1b139f146b63c2223d6ca4246a06"}' http://localhost:5000/respond_to_challenge
