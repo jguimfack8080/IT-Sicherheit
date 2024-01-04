@@ -8,7 +8,7 @@ import os
 import hashlib
 import uuid
 import json
-from smtplib import SMTP
+from smtplib import SMTP, SMTPException, SMTPAuthenticationError
 import sys
 
 app = Flask(__name__)
@@ -59,10 +59,11 @@ def send_email(subject, body, to_email, attachment=None):
             try:
                 smtp.login(user_id, sender_password)
                 print("Anmeldung erfolgreich.")
-            except SMTP.SMTPAuthenticationError:
-                sys.exit("Anmeldung fehlgeschlagen: Falsche Benutzer-ID oder Passwort.")
-            except SMTP.SMTPException as e:
-                sys.exit(f"SMTP-Fehler bei der Anmeldung: {e}")
+            except SMTPException as e:
+                if isinstance(e, SMTPAuthenticationError):
+                    sys.exit("Anmeldung fehlgeschlagen: Falsche Benutzer-ID oder Passwort.")
+                else:
+                    sys.exit(f"SMTP-Fehler bei der Anmeldung: {e}")
 
             # Create email message
             msg = MIMEMultipart()
